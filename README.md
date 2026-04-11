@@ -14,7 +14,7 @@ Add to your `pubspec.yaml`:
 dependencies:
   ndamaps_sdk:
     git:
-      url: https://github.com/ndamaps/sdk-dart.git
+      url: https://github.com/NDAMaps-vn/ndamaps-dart.git
 ```
 
 ## 🚀 Quick Start
