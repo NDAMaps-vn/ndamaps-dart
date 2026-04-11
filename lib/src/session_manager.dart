@@ -1,4 +1,4 @@
-import 'package:uuid/uuid.uuid.dart';
+import 'package:uuid/uuid.dart';
 
 class SessionManager {
   String? _token;
