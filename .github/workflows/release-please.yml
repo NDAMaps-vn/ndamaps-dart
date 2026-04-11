@@ -1,4 +1,4 @@
-on:
+﻿on:
   push:
     branches:
       - main
@@ -14,5 +14,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v4
+        id: release
         with:
           release-type: dart
+
+      - name: Checkout code
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/checkout@v4
+        
+      - name: Setup Dart
+        if: ${{ steps.release.outputs.release_created }}
+        uses: dart-lang/setup-dart@v1
+        
+      - name: Install dependencies
+        if: ${{ steps.release.outputs.release_created }}
+        run: dart pub get
+        
+      - name: Publish to pub.dev
+        if: ${{ steps.release.outputs.release_created }}
+        run: dart pub publish --force
+        env:
+          PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
