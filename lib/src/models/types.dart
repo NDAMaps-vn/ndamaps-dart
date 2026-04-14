@@ -3,6 +3,26 @@
 /// These models map directly to the API's JSON shapes as defined in
 /// the OpenAPI specification (ndamaps-openapi.yaml).
 
+// ── Client Options ────────────────────────────
+
+class ClientOptions {
+  final String apiKey;
+  final String mapsApiBase;
+  final String tilesBase;
+  final String ndaViewBase;
+  final int maxRetries;
+  final int baseDelayMs;
+
+  ClientOptions({
+    required this.apiKey,
+    this.mapsApiBase = 'https://mapapis.ndamaps.vn/v1',
+    this.tilesBase = 'https://nda-tiles.openmap.vn',
+    this.ndaViewBase = 'https://api-view.ndamaps.vn/v1',
+    this.maxRetries = 3,
+    this.baseDelayMs = 500,
+  });
+}
+
 // ── Core Geometry ─────────────────────────────
 
 /// Coordinate pair — always {lat, lng}.
