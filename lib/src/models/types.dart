@@ -16,7 +16,7 @@ class ClientOptions {
   ClientOptions({
     required this.apiKey,
     this.mapsApiBase = 'https://mapapis.ndamaps.vn/v1',
-    this.tilesBase = 'https://nda-tiles.openmap.vn',
+    this.tilesBase = 'https://maptiles.ndamaps.vn',
     this.ndaViewBase = 'https://api-view.ndamaps.vn/v1',
     this.maxRetries = 3,
     this.baseDelayMs = 500,
