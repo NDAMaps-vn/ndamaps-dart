@@ -1,6 +1,6 @@
 name: ndamaps_sdk
 description: NDAMaps SDK for Dart and Flutter.
-version: 0.1.0
+version: 1.0.0
 homepage: https://ndamaps.vn
 
 environment:
