@@ -2,14 +2,28 @@
   <img src="https://ndamaps.vn/logo.png" width="200" alt="NDAMaps Logo" />
 </p>
 
-# NDAMaps Dart & Flutter SDK 🎯
+# NDAMaps Dart & Flutter SDK
 
-The official Dart SDK for the [NDAMaps REST APIs](https://ndamaps.vn).
-This package is fully cross-platform and natively compatible with both pure Dart CLI projects and Flutter mobile/web apps. 
+Official **Dart** package for **NDAMaps** — Vietnam's national digital map platform API.
 
-## 📦 Installation
+Works in **Flutter** (mobile/web) and **pure Dart** (CLI, servers).
 
-Add to your `pubspec.yaml`:
+## Features
+
+- **Places** — Autocomplete and place detail with **automatic session tokens**
+- **Geocoding** — Forward/reverse helpers (e.g. `forwardGoogle`)
+- **Navigation** — Directions, matrix, **optimized route**
+- **Maps** — MapLibre **style** URLs and static map helpers where exposed by the client
+- **NDAView**, **Forcodes**, and unified **`NDAMapsError`** handling
+
+## Requirements
+
+- Dart **3.0+** (`sdk: '>=3.0.0 <4.0.0'`)
+
+## Install
+
+In `pubspec.yaml`:
+
 ```yaml
 dependencies:
   ndamaps_sdk:
@@ -17,39 +31,33 @@ dependencies:
       url: https://github.com/NDAMaps-vn/ndamaps-dart.git
 ```
 
-## 🚀 Quick Start
+Then run `dart pub get` or `flutter pub get`.
 
-Initialize the `NDAMapsClient`:
+## Quick start
 
 ```dart
 import 'package:ndamaps_sdk/ndamaps_sdk.dart';
 
-void main() async {
-  // Pass in your NDAMaps API Key
+Future<void> main() async {
   final client = NDAMapsClient(ClientOptions(apiKey: 'YOUR_API_KEY'));
 
   try {
-    // 1. Geocoding Example
-    final geoResult = await client.geocoding.forwardGoogle(
-      address: 'Lotte Center',
-    );
-    print(geoResult['results']);
+    final geo = await client.geocoding.forwardGoogle(address: 'Lotte Center');
+    print(geo['results']);
 
-    // 2. Maps (Get Static Map Thumbnail)
-    final mapUrl = client.maps.styleUrl(styleId: 'day-v1');
-    print('Render Tiles via: $mapUrl');
-
+    final styleUrl = client.maps.styleUrl(styleId: 'day-v1');
+    print(styleUrl);
   } on NDAMapsError catch (e) {
-    print('Failed with API code: ${e.code}');
-  } catch (e) {
-    print('Fatal Error: $e');
+    print('API error: ${e.code}');
   }
 }
 ```
 
-## 🚙 Route Optimization
+## Session tokens (billing)
 
-For logistics, calculate Travelling Salesperson routing:
+The client keeps a **UUID v4** session between `autocomplete` and `placeDetail` when you use the high-level flow, similar to common maps SDKs, so those calls can group for billing.
+
+## Optimized route
 
 ```dart
 final l1 = {'lat': 21.03624, 'lon': 105.77142};
@@ -58,22 +66,29 @@ final l3 = {'lat': 21.00329, 'lon': 105.81834};
 
 final route = await client.navigation.optimizedRoute([l1, l2, l3, l1]);
 final trip = route['trip'];
-print('Route Legs: ${trip['legs']}');
+print(trip?['legs']);
 ```
 
-## 🧠 Smart Autocomplete Linking
-Just like the Google Maps SDK, `NDAMapsClient` natively stores and transmits a secure UUID v4 for the billing connection between `autocomplete()` queries and their corresponding `placeDetail()` execution automatically.
+## Error handling
 
-## 🛑 Error Handlers
-
-SDK requests throw `NDAMapsError` holding logical mapping logic.
 ```dart
-switch (error.code) {
-  case 'INVALID_API_KEY': // Fix your key!
-  case 'RATE_LIMIT_EXCEEDED': // Chill
-  case 'PLACE_NOT_FOUND': // 404 mapping
+on NDAMapsError catch (error) {
+  switch (error.code) {
+    case 'INVALID_API_KEY':
+    case 'RATE_LIMIT_EXCEEDED':
+    case 'PLACE_NOT_FOUND':
+      break;
+    default:
+      break;
+  }
 }
 ```
 
-## 📜 License
-MIT License.
+## Links
+
+- [NDAMaps documentation](https://docs.ndamaps.vn)
+- [NDAMaps platform](https://ndamaps.vn)
+
+## License
+
+MIT
